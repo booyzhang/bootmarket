@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.booy.boot.dao.BillDAO">
+    <insert id="addBill" parameterType="Bill">
+        insert into bill(goods_name, unit, amount, price, provider_id , status, create_date)
+        VALUES (#{goodsName}, #{unit}, #{amount}, #{price}, #{providerId},#{status}, #{createDate})
+    </insert>
+
+    <select id="getBillById" parameterType="int" resultType="Bill">
+        select id,goods_name goodsName, unit, amount, price, provider_id providerId , status, create_date createDate
+        from bill
+        where id = #{id}
+    </select>
+
+    <update id="updateBill" parameterType="Bill">
+        update bill
+        <set>
+            <if test="goodsName!=null and goodsName!=''">goods_name=#{goodsName},</if>
+            <if test="unit!=null and unit!=''">unit=#{unit},</if>
+            <if test="amount!=null">amount=#{amount},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="providerId!=null">provider_id=#{providerId},</if>
+            <if test="status!=null">status=#{status}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteBillById" parameterType="int">
+        delete from bill where id=#{id}
+    </delete>
+
+    <select id="getBillList" parameterType="Bill" resultType="Bill">
+        select b.id,goods_name goodsName, unit, amount, price, p.name providerName , status, b.create_date createDate
+        from bill b inner join provider p on b.provider_id = p.id
+        <where>
+            <if test="goodsName!=null and goodsName!=''">goods_name like concat('%',#{goodsName},'%')</if>
+            <if test="status!=null">and status=#{status}</if>
+            <if test="providerId!=null">and provider_id=#{providerId}</if>
+        </where>
+    </select>
+</mapper>

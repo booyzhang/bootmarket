@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>超市账单管理系统</title>
+    <link rel="stylesheet" href="css/public.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<!--头部-->
+<div th:replace="header.html"></div>
+<!--主体内容-->
+    <section class="publicMian ">
+        <div th:replace="left(type=2)"></div>
+        <div class="right">
+            <div class="location">
+                <strong>你现在所在的位置是:</strong>
+                <span>供应商管理页面</span>
+            </div>
+            <div class="search">
+                <form action="providerList.html" method="post" id="searchForm">
+                    <span>供应商名称：</span>
+                    <input type="text" placeholder="请输入供应商名称" name="name" th:value="${param.name}"/><!--th:value，name搜索回填-->
+                    <input type="button" value="查询" onclick="$('#searchForm').submit()"/>
+                    <a href="goProviderEdit.html">添加供应商</a>
+                </form>
+            </div>
+            <!--用户-->
+            <table class="providerTable" cellpadding="0" cellspacing="0">
+                <tr class="firstTr">
+                    <th width="10%">供应商编码</th>
+                    <th width="20%">供应商名称</th>
+                    <th width="10%">联系人</th>
+                    <th width="10%">联系电话</th>
+                    <th width="10%">传真</th>
+                    <th width="10%">创建时间</th>
+                    <th width="30%">操作</th>
+                </tr>
+                <tr th:each="p:${providerList}">
+                    <td th:text="${p.code}">hanlu</td>
+                    <td th:text="${p.name}">韩露</td>
+                    <td th:text="${p.linkman}">女</td>
+                    <td th:text="${p.phone}">20</td>
+                    <td th:text="${p.fax}">15918230478</td>
+                    <td th:text="${#dates.format(p.createDate, 'yyyy-MM-dd')}">15918230478</td>
+                    <td>
+<!--                        <a href="userView.html"><img src="img/read.png" alt="查看" title="查看"/></a>-->
+                        <a th:href="@{goProviderEdit.html?id={id} (id=${p.id})}"><img src="img/xiugai.png" alt="修改" title="修改"/></a>
+                        <a th:href="@{deleteProvider.html?id={id} (id=${p.id})}" class="removeUser"><img src="img/schu.png" alt="删除" title="删除"/></a>
+                        <span th:text="${message}"></span>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </section>
+
+<!--点击删除按钮后弹出的页面-->
+<div class="zhezhao"></div>
+<div class="remove" id="removeUse">
+    <div class="removerChid">
+        <h2>提示</h2>
+        <div class="removeMain">
+            <p>你确定要删除该用户吗？</p>
+            <a href="#" id="yes">确定</a>
+            <a href="#" id="no">取消</a>
+        </div>
+    </div>
+</div>
+
+    <footer class="footer">
+    </footer>
+
+<script src="js/jquery.js"></script>
+<script src="js/js.js"></script>
+<script src="js/time.js"></script>
+
+</body>
+</html>

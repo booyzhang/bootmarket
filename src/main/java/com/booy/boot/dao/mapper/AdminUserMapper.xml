@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.booy.boot.dao.AdminUserDAO">
+    <insert id="addAdminUser" parameterType="AdminUser">
+        insert into admin_user(name, password, gender, age, code, mobile, type)
+        VALUES (#{name}, #{password}, #{gender}, #{age}, #{code}, #{mobile}, #{type})
+    </insert>
+
+    <select id="getAdminUserList" parameterType="String" resultType="AdminUser">
+        select id,name,gender,age,code,mobile,type from admin_user
+        <where>
+            <if test="_parameter!=null and _parameter!=''">name like concat('%',#{name},'%')</if>
+        </where>
+    </select>
+
+    <select id="getAdminUserByName" parameterType="String" resultType="AdminUser">
+        select id,name, password
+        from admin_user
+        where name = #{name}
+    </select>
+    <select id="getAdminUserById" parameterType="int" resultType="AdminUser">
+        select id, name, gender, age, code, mobile, type
+        from admin_user
+        where id = #{id}
+    </select>
+    <update id="updateAdminUser" parameterType="AdminUser">
+        update admin_user
+        <set>
+            <if test="password!=null and password!=''">password=#{password},</if>
+            <if test="gender!=null">gender=#{gender},</if>
+            <if test="age!=null">age=#{age},</if>
+            <if test="code!=null and code!=''">code=#{code},</if>
+            <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
+            <if test="type!=null">type=#{type}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteAdminUserById" parameterType="int">
+        delete from admin_user where id=#{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.booy.boot.dao.ProviderDAO">
+    <insert id="addProvider" parameterType="Provider">
+        insert into provider(code, name, linkman, phone, fax, create_date)
+        VALUES (#{code}, #{name}, #{linkman}, #{phone}, #{fax}, #{createDate})
+    </insert>
+
+    <select id="getProviderList" parameterType="String" resultType="Provider">
+        select id,code,name,linkman, phone, fax, create_date createDate from provider
+        <where>
+            <if test="_parameter!=null and _parameter!=''">name like concat('%',#{name},'%')</if>
+        </where>
+    </select>
+
+    <select id="getProviderById" parameterType="int" resultType="Provider">
+        select id,code,name,linkman, phone, fax, create_date createDate
+        from provider
+        where id = #{id}
+    </select>
+
+    <update id="updateProvider" parameterType="Provider">
+        update provider
+        <set>
+            <if test="code!=null and code!=''">code=#{code},</if>
+            <if test="name!=null and name!=''">name=#{name},</if>
+            <if test="linkman!=null and linkman!=''">linkman=#{linkman},</if>
+            <if test="phone!=null and phone!=''">phone=#{phone},</if>
+            <if test="fax!=null and fax!=''">fax=#{fax}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteProviderById" parameterType="int">
+        delete from provider where id=#{id}
+    </delete>
+
+    <select id="getProviderName" resultType="Provider">
+        select id,name from provider
+    </select>
+</mapper>
